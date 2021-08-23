@@ -1,0 +1,10 @@
+{
+  "name": "moodle-atto_qrcode-button",
+  "build": {
+    "moodle-atto_qrcode-button": {
+      "jsfiles": [
+        "button.js"
+      ]
+    }
+  }
+}
