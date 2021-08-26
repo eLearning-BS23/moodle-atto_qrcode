@@ -1,3 +1,5 @@
+YUI.add('moodle-atto_qrcode-button', function (Y, NAME) {
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -223,3 +225,6 @@ Y.use('core/event')
     }
 });
 
+
+
+}, '@VERSION@', {"requires": ["moodle-editor_atto-plugin"]});

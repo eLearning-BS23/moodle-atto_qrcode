@@ -33,12 +33,19 @@ defined('MOODLE_INTERNAL') || die();
  * @param stdClass $fpoptions
  */
 function atto_qrcode_params_for_js($elementid, $options, $fpoptions) {
-
 }
 
 /**
  * Initialise the js strings required for this module.
  */
 function atto_qrcode_strings_for_js() {
+    global $PAGE;
 
+    $PAGE->requires->strings_for_js(
+        array(
+            'insertqrcode',
+            'qrcodecontent',
+        ),
+        'atto_qrcode'
+    );
 }

@@ -23,6 +23,7 @@
  *
  */
 
-$string["pluginname"] = 'QRCode';
-$string["insertqrcode"] = 'Insert QR code';
-$string['privacy:metadata'] = 'The QRCode plugin does not store any personal data.';
+$string["pluginname"] = 'QR Code';
+$string["insertqrcode"] = 'Generate QR Code';
+$string["qrcodecontent"] = 'QR Code content';
+$string['privacy:metadata'] = 'The QR Code plugin does not store any personal data.';

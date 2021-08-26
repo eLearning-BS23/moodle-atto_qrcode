@@ -1,8 +1,7 @@
 {
   "moodle-atto_qrcode-button": {
     "requires": [
-      "base",
-      "node"
+      "moodle-editor_atto-plugin"
     ]
   }
 }
