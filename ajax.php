@@ -25,7 +25,7 @@
 
 use atto_qrcode\output_image;
 
-//define('AJAX_SCRIPT', true);
+define('AJAX_SCRIPT', true);
 
 require_once(__DIR__ . '/../../../../../config.php');
 
@@ -40,26 +40,15 @@ require_sesskey();
 
 $output_image = new output_image(2, 30, $context);
 
-$base64string = $output_image->create_image('http://localhost:8000/lib/editor/atto/plugins/qrcode/ajax.php?sesskey=WO3NyDIXFm&contextid=31');
-//echo $OUTPUT->header();
-echo html_writer::img($base64string,'qrcode');
+try {
+    $base64string = $output_image->create_image('http://localhost:8000/lib/editor/atto/plugins/qrcode/ajax.php?sesskey=WO3NyDIXFm&contextid=31');
 
-//header('Content-Type: application/json');
-//echo json_encode([
-//    'data' => $base64string
-//]);
+    header('Content-Type: application/json');
+    echo json_encode([
+        'data' => $base64string
+    ]);
 
-die();
-//$action = required_param('action', PARAM_ALPHA);
-//
-//if ($action === 'filtertext') {
-//    $text = required_param('text', PARAM_RAW);
-//
-//    $result = filter_manager::instance()->filter_text($text, $context);
-//    echo $OUTPUT->header();
-//    echo $result;
-//
-//    die();
-//}
-//
-//print_error('invalidarguments');
+    die();
+}catch (Exception $exception){
+    print_error('invalidarguments');
+}
