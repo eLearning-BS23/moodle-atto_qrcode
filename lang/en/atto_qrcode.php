@@ -24,6 +24,8 @@
  */
 
 $string["pluginname"] = 'QR Code';
-$string["insertqrcode"] = 'Generate QR Code';
-$string["qrcodecontent"] = 'QR Code content';
+$string["qrcode_size"] = 'Size';
+$string["qrcode_margin"] = 'Margin';
+$string["qrcodecontent"] = 'QR code content';
+$string["insertqrcode"] = 'Insert QR code';
 $string['privacy:metadata'] = 'The QR Code plugin does not store any personal data.';

@@ -32,45 +32,19 @@ var COMPONENTNAME = 'atto_qrcode',
     // @codingStandardsIgnoreStart
     IMAGETEMPLATE = '',
     TEMPLATES = '<form class="mform atto_form atto_qrcode" id="atto_qrcode_form">' +
-        '<label for="brightcove_accountid_entry">'+M.str.atto_qrcode.enter_account_id+'</label>' +
-        '<input class="form-control fullwidth " type="text" id="brightcove_accountid_entry"' +
-        'size="32" required="true" value="{{brightcoveAccount}}"/>' +
-        '<label for="brightcove_videoid_entry">'+M.str.atto_qrcode.enter_video_id+'</label>' +
-        '<input class="form-control fullwidth " type="text" id="brightcove_videoid_entry"' +
-        'size="32" required="true"/>' +
-        '<label for="brightcove_playerid_entry">'+M.str.atto_qrcode.enter_player_id+'</label>' +
-        '<input class="form-control fullwidth " type="text" id="brightcove_playerid_entry"' +
-        'size="32" required="true" value="{{brightcovePlayer}}"/>' +
-        '<div class="mb-1">' +
-        '<label for="brightcove_sizing" class="full-width-labels">'+M.str.atto_qrcode.video_sizing+'</label><br>' +
-        '<div class="form-check form-check-inline">' +
-        '  <input class="form-check-input" type="radio" name="brightcove_sizing" id="inlineRadio1" value="res" checked>' +
-        '  <label class="form-check-label" for="inlineRadio1">'+M.str.atto_qrcode.video_responsive+'</label>' +
-        '</div>' +
-        '<div class="form-check form-check-inline">' +
-        '  <input class="form-check-input" type="radio" name="brightcove_sizing" id="inlineRadio2" value="fix">' +
-        '  <label class="form-check-label" for="inlineRadio2">'+M.str.atto_qrcode.video_fixed+'</label>' +
-        '</div>' +
-        '</div>' +
-        '<div class="mb-1" >' +
-        '    <label>'+M.str.atto_qrcode.video_size+'</label>' +
-        '    <div class="form-inline " >' +
-        '        <label class="accesshide">'+M.str.atto_qrcode.video_width+'</label>' +
-        '        <input type="text" class="form-control mr-1  input-mini" size="4" id="brightcove_width" value="960"> x' +
-        '        <label class="accesshide">'+M.str.atto_qrcode.video_height+'</label>' +
-        '        <input type="text" class="form-control ml-1 input-mini" size="4" id="brightcove_height" value="540">' +
-        '        <label class="accesshide">Unit</label>' +
-        '        <select class="form-control ml-1 input-mini"  id="brightcove_width_unit">' +
-        '            <option value="px" selected>px</option>' +
-        '            <option value="cm" >cm</option>' +
-        '            <option value="%" >%</option>' +
-        '        </select>' +
-        '    </div>' +
-        '</div>' +
+        '<label for="qrcodecontent">'+M.str.atto_qrcode.qrcodecontent+'</label>' +
+        '<input class="form-control fullwidth " type="text" id="qrcodecontent"' +
+        'required="true" value="{{qrcodecontent}}"/>' +
+        '<label for="qrcode_size">'+M.str.atto_qrcode.qrcode_size+'</label>' +
+        '<input class="form-control fullwidth " type="number" id="qrcode_size"' +
+        'required="true" size="10" value="300" min="5" max="100000"/>' +
+        '<label for="qrcode_margin">'+M.str.atto_qrcode.qrcode_margin+'</label>' +
+        '<input class="form-control fullwidth " type="number" id="qrcode_margin"' +
+        'size="10" value="10" min="5" max="100" required="true" value="{{qrcode_margin}}"/>' +
         '<div class="clearfix"></div>' +
         '<div class="mdl-align">' +
         '<br>' +
-        '<button class="btn btn-secondary submit" type="submit">'+M.str.atto_qrcode.insert_brightcove_video+'</button>' +
+        '<button class="btn btn-secondary submit" type="submit">'+M.str.atto_qrcode.insertqrcode+'</button>' +
         '</div>' +
         '</form>',
     THUMBIMAGE = '';
@@ -100,6 +74,12 @@ Y.use('core/event')
         if (this.get('disabled')) {
             return;
         }
+
+        // var url = M.cfg.wwwroot + '/lib/editor/atto/plugins/qrcode/ajax.php';
+        // var params = {
+        //     sesskey: M.cfg.sesskey,
+        // };
+
         this.addButton({
             icon: 'qrcode',
             iconComponent: COMPONENTNAME,
@@ -114,6 +94,7 @@ Y.use('core/event')
      * @private
      */
     _handleQrCodeGenerator: function() {
+        this._getQrCode();
         var dialogue = this.getDialogue({
             headerContent: M.util.get_string('insertqrcode', COMPONENTNAME),
             focusAfterHide: true,
@@ -123,7 +104,30 @@ Y.use('core/event')
         dialogue.set('bodyContent', this._getDialogueContent(this.get('host').getSelection())).show();
         // M.form.shortforms({formid: 'atto_qrcode_form'});
     },
-
+    _getQrCode: function() {
+        Y.io(M.cfg.wwwroot + '/lib/editor/atto/plugins/qrcode/ajax.php', {
+            context: this,
+            data: {
+                sesskey: M.cfg.sesskey,
+                contextid: this.get('contextid'),
+            },
+            timeout: 500,
+            on: {
+                complete: this._handaleQrCodeAjaxCall
+            }
+        });
+    },
+    /**
+     * Load returned preview text into preview
+     *
+     * @param {String} id
+     * @param {EventFacade} preview
+     * @method _loadPreview
+     * @private
+     */
+    _handaleQrCodeNetworkCall: function(id, preview){
+        console.log(preview);
+    },
     /**
      * Returns the dialogue content for the tool.
      *
@@ -134,7 +138,7 @@ Y.use('core/event')
      */
     _getDialogueContent: function(selection) {
         var context = {
-            brightcovePlayer: this.get('brightcovePlayer'),
+            qrcode_margin: this.get('qrcode_margin'),
             brightcoveAccount: this.get('brightcoveAccount')
         };
         var content = Y.Node.create(
@@ -154,9 +158,9 @@ Y.use('core/event')
     _attachEvents: function(content, selection) {
         content.one('.submit').on('click', function(e) {
             var atto_form_content = e.currentTarget.ancestor('.atto_form');
-            var account_id = atto_form_content.one("#brightcove_accountid_entry").get('value');
-            var video_id = atto_form_content.one("#brightcove_videoid_entry").get('value');
-            var player_id = atto_form_content.one("#brightcove_playerid_entry").get('value');
+            var account_id = atto_form_content.one("#qrcodecontent").get('value');
+            var video_id = atto_form_content.one("#qrcode_size").get('value');
+            var player_id = atto_form_content.one("#qrcode_margin").get('value');
 
             if (!account_id || !video_id || !player_id) {
                 return;
@@ -216,10 +220,7 @@ Y.use('core/event')
         disabled: {
             value: false
         },
-        brightcovePlayer: {
-            value: null
-        },
-        brightcoveAccount: {
+        contextid: {
             value: null
         }
     }

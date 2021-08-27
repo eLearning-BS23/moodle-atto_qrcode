@@ -33,6 +33,15 @@ defined('MOODLE_INTERNAL') || die();
  * @param stdClass $fpoptions
  */
 function atto_qrcode_params_for_js($elementid, $options, $fpoptions) {
+
+    $context = $options['context'];
+    if (!$context) {
+        $context = context_system::instance();
+    }
+
+    return array(
+        'contextid' => $context->id
+    );
 }
 
 /**
@@ -43,8 +52,12 @@ function atto_qrcode_strings_for_js() {
 
     $PAGE->requires->strings_for_js(
         array(
+            'pluginname',
+            'qrcode_size',
+            'qrcode_margin',
             'insertqrcode',
             'qrcodecontent',
+            'insertqrcode',
         ),
         'atto_qrcode'
     );
