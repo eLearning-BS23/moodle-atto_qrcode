@@ -64,6 +64,9 @@ class output_image
      */
     protected $format;
 
+
+    protected $margin;
+
     /**
      * Size of qrcode (downloaded image).
      * Only for png.
@@ -87,14 +90,16 @@ class output_image
      * output_image constructor.
      * @param int $format file type
      * @param int $size image size
-     * @param int $courseid course for which the qrcode is created
+     * @param $context
+     * @param int $margin
      */
-    public function __construct($format, $size, $context)
+    public function __construct($format, $size, $context, $margin = 10)
     {
-        global $CFG, $DB;
+        global $CFG;
         $this->format = $format;
         $this->size = (int)$size;
         $this->context = $context;
+        $this->margin = $margin;
         $this->logopath = null;
         $file = $CFG->localcachedir . '/atto_qrcode/context-' .
             (int)$context->id . '-' . $this->size; // Set file path.
@@ -111,23 +116,41 @@ class output_image
     }
 
     /**
-     * Creates the QR code if it doesn't exist.
+     * @param string $data
+     * @param array $bgcolor_rgba
+     * @param array $color_rgb
+     * @param string $encoding
+     * @return string
+     * @throws \Exception
      */
-    public function create_image(string $data)
+    public function create_image(string $data, array $bgcolor_rgba= [], array $color_rgba=[], $encoding= 'UTF-8')
     {
         global $CFG;
+        list($bgcolor_r , $bgcolor_g, $bgcolor_b, $bgcolor_a) = $bgcolor_rgba;
+        list($color_r , $color_g, $color_b, $color_a) = $color_rgba;
+
+        $bgcolor_r = $bgcolor_r ?? 255;
+        $bgcolor_g = $bgcolor_g ?? 255;
+        $bgcolor_b = $bgcolor_b ?? 255;
+        $bgcolor_a = $bgcolor_a ?? 0;
+
+        $color_r = $color_r ?? 0;
+        $color_g = $color_g ?? 0;
+        $color_b = $color_b ?? 0;
+        $color_a = $color_a ?? 0;
+
 
         $writer = new PngWriter();
 
         // Create QR code.
         $qrCode = QrCode::create($data)
-            ->setEncoding(new Encoding('UTF-8'))
+            ->setEncoding(new Encoding($encoding))
             ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
-            ->setSize(300)
-            ->setMargin(10)
+            ->setSize($this->size)
+            ->setMargin($this->margin)
             ->setRoundBlockSizeMode(new RoundBlockSizeModeMargin())
-            ->setForegroundColor(new Color(0, 0, 0))
-            ->setBackgroundColor(new Color(255, 255, 255));
+            ->setForegroundColor(new Color($color_r, $color_g, $color_b, $color_a))
+            ->setBackgroundColor(new Color($bgcolor_r, $bgcolor_g, $bgcolor_b, $bgcolor_a));
         $result = $writer->write($qrCode);
         return $result->getDataUri();
 

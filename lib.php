@@ -27,12 +27,30 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * Set params for this plugin.
- *
  * @param string $elementid
  * @param stdClass $options
  * @param stdClass $fpoptions
+ * @return array
+ * @throws coding_exception
+ * @throws dml_exception
  */
 function atto_qrcode_params_for_js($elementid, $options, $fpoptions) {
+    global $USER;
+
+    $qrcode_size = get_config('atto_qrcode', 'qrcode_size');
+    $margin = get_config('atto_qrcode', 'qrcode_margin');
+    $bgcolor_r = get_config('atto_qrcode', 'bgcolor_r');
+    $bgcolor_g = get_config('atto_qrcode', 'bgcolor_g');
+    $bgcolor_b = get_config('atto_qrcode', 'bgcolor_b');
+    $bgcolor_a = get_config('atto_qrcode', 'bgcolor_a');
+    $color_r = get_config('atto_qrcode', 'color_r');
+    $color_g = get_config('atto_qrcode', 'color_g');
+    $color_b = get_config('atto_qrcode', 'color_b');
+    $color_a = get_config('atto_qrcode', 'color_a');
+
+    // Disabled if:
+    // - Not logged in or guest.
+    $disabled = !isloggedin() || isguestuser() ;
 
     $context = $options['context'];
     if (!$context) {
@@ -40,8 +58,20 @@ function atto_qrcode_params_for_js($elementid, $options, $fpoptions) {
     }
 
     return array(
-        'contextid' => $context->id
+        'disabled' => $disabled,
+        'contextid' => $context->id,
+        'size' => $qrcode_size,
+        'margin' => $margin,
+        'bgcolor_r' => $bgcolor_r,
+        'bgcolor_g' => $bgcolor_g,
+        'bgcolor_b' => $bgcolor_b,
+        'bgcolor_a' => $bgcolor_a,
+        'color_r' => $color_r,
+        'color_g' => $color_g,
+        'color_b' => $color_b,
+        'color_a' => $color_a,
     );
+
 }
 
 /**
@@ -58,6 +88,12 @@ function atto_qrcode_strings_for_js() {
             'insertqrcode',
             'qrcodecontent',
             'insertqrcode',
+            'backgroundcolor',
+            'forgroungcolor',
+            'red',
+            'green',
+            'blue',
+            'alpha',
         ),
         'atto_qrcode'
     );

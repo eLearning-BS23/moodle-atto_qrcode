@@ -42,6 +42,30 @@ var COMPONENTNAME = 'atto_qrcode',
         '<input class="form-control fullwidth " type="number" id="qrcode_margin"' +
         'size="10"  min="5" max="100" required="true" value="{{qrcode_margin_default}}"/>' +
         '<div class="clearfix"></div>' +
+        '<label for="qrcode_margin">'+M.str.atto_qrcode.backgroundcolor+'</label>' +
+        '<div class="input-group">' +
+        '<div class="input-group-prepend"> <span class="input-group-text">'+M.str.atto_qrcode.red+'</span></div>' +
+        '<input required type="number" class="form-control" value="{{bgcolor_r}}" id="bgcolor_r" aria-label="Red">' +
+        '<div class="input-group-prepend"> <span class="input-group-text">'+M.str.atto_qrcode.green+'</span></div>' +
+        '<input required type="number" class="form-control" value="{{bgcolor_g}}" id="bgcolor_g"  aria-label="Green">' +
+        '<div class="input-group-prepend"> <span class="input-group-text">'+M.str.atto_qrcode.blue+'</span></div>' +
+        '<input required type="number" class="form-control" value="{{bgcolor_b}}" id="bgcolor_b" aria-label="Blue">' +
+        '<div class="input-group-prepend"> <span class="input-group-text">'+M.str.atto_qrcode.alpha+'</span></div>' +
+        '<input required type="number" class="form-control" value="{{bgcolor_a}}" id="bgcolor_a" aria-label="Alpha">' +
+        '</div>' +
+        '<div class="clearfix"></div>' +
+        '<label for="qrcode_margin">'+M.str.atto_qrcode.forgroungcolor+'</label>' +
+        '<div class="input-group">' +
+        '<div class="input-group-prepend"> <span class="input-group-text">'+M.str.atto_qrcode.red+'</span></div>' +
+        '<input required type="number" class="form-control" id="color_r" value="{{color_r}}" aria-label="Red">' +
+        '<div class="input-group-prepend"> <span class="input-group-text">'+M.str.atto_qrcode.green+'</span></div>' +
+        '<input required type="number" class="form-control" id="color_g" value="{{color_g}}" aria-label="Green">' +
+        '<div class="input-group-prepend"> <span class="input-group-text">'+M.str.atto_qrcode.blue+'</span></div>' +
+        '<input required type="number" class="form-control" id="color_b" value="{{color_b}}" aria-label="Blue">' +
+        '<div class="input-group-prepend"> <span class="input-group-text">'+M.str.atto_qrcode.alpha+'</span></div>' +
+        '<input required type="number" class="form-control" id="color_a" value="{{color_a}}" aria-label="Alpha">' +
+        '</div>' +
+        '<div class="clearfix"></div>' +
         '<div class="mdl-align">' +
         '<br>' +
         '<button class="btn btn-secondary submit" type="submit">'+M.str.atto_qrcode.insertqrcode+'</button>' +
@@ -110,8 +134,16 @@ Y.use('core/event')
      */
     _getDialogueContent: function(selection) {
         var context = {
-            qrcode_size_default: 300,
-            qrcode_margin_default: 10,
+            qrcode_size_default: this.get('size'),
+            qrcode_margin_default: this.get('margin'),
+            color_r: this.get('color_r'),
+            color_g: this.get('color_g'),
+            color_b: this.get('color_b'),
+            color_a: this.get('color_a'),
+            bgcolor_r: this.get('bgcolor_r'),
+            bgcolor_g: this.get('bgcolor_g'),
+            bgcolor_b: this.get('bgcolor_b'),
+            bgcolor_a: this.get('bgcolor_a'),
         };
         var content = Y.Node.create(
             Y.Handlebars.compile(TEMPLATES)(context)
@@ -133,27 +165,31 @@ Y.use('core/event')
             var qrcodecontent = atto_form_content.one("#qrcodecontent").get('value');
             var qrcode_size = atto_form_content.one("#qrcode_size").get('value');
             var qrcode_margin = atto_form_content.one("#qrcode_margin").get('value');
+            var bgcolor_r = atto_form_content.one("#bgcolor_r").get('value');
+            var bgcolor_g = atto_form_content.one("#bgcolor_g").get('value');
+            var bgcolor_b = atto_form_content.one("#bgcolor_b").get('value');
+            var bgcolor_a = atto_form_content.one("#bgcolor_a").get('value');
+            var color_r = atto_form_content.one("#color_r").get('value');
+            var color_g = atto_form_content.one("#color_g").get('value');
+            var color_b = atto_form_content.one("#color_b").get('value');
+            var color_a = atto_form_content.one("#color_a").get('value');
+
+            var color = {
+                bgcolor_r: bgcolor_r,
+                bgcolor_g: bgcolor_g,
+                bgcolor_b: bgcolor_b,
+                bgcolor_a: bgcolor_a,
+                color_r: color_r,
+                color_g: color_g,
+                color_b: color_b,
+                color_a: color_a
+            };
 
             if (!qrcodecontent || !qrcode_size || !qrcode_margin) {
                 return;
             }
-            console.log(qrcodecontent);
-            console.log(qrcode_size);
-            console.log(qrcode_margin);
-
             e.preventDefault();
-            var mediaHTML = this._getMediaHTMLQrcode(qrcodecontent, qrcode_size, qrcode_margin),
-                host = this.get('host');
-
-
-            this.getDialogue({
-                focusAfterHide: null
-            }).hide();
-            if (mediaHTML) {
-                host.setSelection(selection);
-                host.insertContentAtFocusPoint(mediaHTML);
-                this.markUpdated();
-            }
+            this._getMediaHTMLQrcode(selection, qrcodecontent, qrcode_size, qrcode_margin, color);
         }, this);
 
         return content;
@@ -166,43 +202,62 @@ Y.use('core/event')
      * @return {String} The compiled markup
      * @private
      */
-    _getMediaHTMLQrcode: function(qrcodecontent, qrcode_size, qrcode_margin) {
+    _getMediaHTMLQrcode: function(selection, qrcode_content, qrcode_size, qrcode_margin, color) {
+        var parentContext = this;
+        var qcodePromise = this._getQrCode(qrcode_content, qrcode_size, qrcode_margin, color);
+        // eslint-disable-next-line promise/catch-or-return
+        qcodePromise.then(function (response) {
+            var context = {
+                base64qrcode: response.data
+            };
+            var mediaHTML = Y.Handlebars.compile(IMAGETEMPLATE)(context);
 
-        this._getQrCode();
-        var context = {
-            base64qrcode : 'base64qrcode'
-        };
+            var host = parentContext.get('host');
 
-        return Y.Handlebars.compile(IMAGETEMPLATE)(context);
+            parentContext.getDialogue({
+                focusAfterHide: null
+            }).hide();
+            // eslint-disable-next-line promise/always-return
+            if (mediaHTML) {
+                host.setSelection(selection);
+                host.insertContentAtFocusPoint(mediaHTML);
+                parentContext.markUpdated();
+            }
+        }).catch(function(err) {
+            // Return null;
+        });
+
+
     },
-        _getQrCode: function() {
+    _getQrCode: function(qrcode_content, qrcode_size, qrcode_margin, color) {
+        var buttonContext = this;
+        return new Y.Promise(function(resolve, reject) {
             Y.io(M.cfg.wwwroot + '/lib/editor/atto/plugins/qrcode/ajax.php', {
-                context: this,
-                data: {
+                context: buttonContext,
+                data: Y.merge({
                     sesskey: M.cfg.sesskey,
-                    contextid: this.get('contextid'),
-                },
+                    contextid: buttonContext.get('contextid'),
+                    content: qrcode_content,
+                    size: qrcode_size,
+                    margin: qrcode_margin,
+                }, color),
                 timeout: 500,
                 on: {
-                    complete: this._handaleQrCodeAjaxCall
+                    success: function (id, o, args) {
+                        try {
+                            resolve(Y.JSON.parse(o.response));
+                        } catch (e) {
+                            // any failure to produce the value is a rejection
+                            reject(e);
+                        }
+                    },
+                    failure: function (id, o, args) {
+                        reject(new Error(o));
+                    }
                 }
             });
-        },
-        /**
-         * Load returned preview text into preview
-         *
-         * @param {String} id
-         * @param {EventFacade} preview
-         * @method _loadPreview
-         * @private
-         */
-        _handaleQrCodeNetworkCall: function(id, preview){
-            console.log(id);
-            console.log(preview);
-        },
-
-
-
+        });
+    }
 }, {
     ATTRS: {
         disabled: {
@@ -210,6 +265,36 @@ Y.use('core/event')
         },
         contextid: {
             value: null
+        },
+        size: {
+            value: 300
+        },
+        margin: {
+            value: 10
+        },
+        bgcolor_r: {
+            value: 255
+        },
+        bgcolor_g: {
+            value: 255
+        },
+        bgcolor_b: {
+            value: 255
+        },
+        bgcolor_a: {
+            value: 0
+        },
+        color_r: {
+            value: 0
+        },
+        color_g: {
+            value: 0
+        },
+        color_b: {
+            value: 0
+        },
+        color_a: {
+            value: 0
         }
     }
 });

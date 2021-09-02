@@ -30,6 +30,19 @@ define('AJAX_SCRIPT', true);
 require_once(__DIR__ . '/../../../../../config.php');
 
 $contextid = required_param('contextid', PARAM_INT);
+$content = required_param('content', PARAM_RAW);
+$size = required_param('size', PARAM_INT);
+$margin= required_param('margin', PARAM_INT);
+$bgcolor_r = optional_param('bgcolor_r', 255,PARAM_INT);
+$bgcolor_g = optional_param('bgcolor_g', 255,PARAM_INT);
+$bgcolor_b = optional_param('bgcolor_b', 255,PARAM_INT);
+$bgcolor_a = optional_param('bgcolor_a', 0,PARAM_INT);
+
+$color_r = optional_param('color_r', 0,PARAM_INT);
+$color_g = optional_param('color_g', 0,PARAM_INT);
+$color_b = optional_param('color_b', 0,PARAM_INT);
+$color_a = optional_param('color_a', 0,PARAM_INT);
+
 
 list($context, $course, $cm) = get_context_info_array($contextid);
 $PAGE->set_url('/lib/editor/atto/plugins/qrcode/ajax.php');
@@ -38,10 +51,13 @@ $PAGE->set_context($context);
 require_login($course, false, $cm);
 require_sesskey();
 
-$output_image = new output_image(2, 30, $context);
+$output_image = new output_image(2, $size, $context, $margin);
 
 try {
-    $base64string = $output_image->create_image('http://localhost:8000/lib/editor/atto/plugins/qrcode/ajax.php?sesskey=WO3NyDIXFm&contextid=31');
+    $base64string = $output_image->create_image($content,
+        [$bgcolor_r,$bgcolor_g, $bgcolor_b, $bgcolor_a],
+        [$color_r,$color_g, $color_b, $color_a]
+    );
 
     header('Content-Type: application/json');
     echo json_encode([

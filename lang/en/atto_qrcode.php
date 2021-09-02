@@ -24,8 +24,27 @@
  */
 
 $string["pluginname"] = 'QR Code';
+$string["qrcode_settings"] = 'QR Code settings';
 $string["qrcode_size"] = 'Size';
+$string["qrcode_size_desc"] = 'Height and width of QR Code';
 $string["qrcode_margin"] = 'Margin';
+$string["qrcode_margin_desc"] = 'Margin for QR Code';
 $string["qrcodecontent"] = 'QR code content';
 $string["insertqrcode"] = 'Insert QR code';
+$string["backgroundcolor"] = 'Background color (RGBA)';
+$string["forgroungcolor"] = 'Foreground color (RGBA)';
+$string["red"] = 'Red';
+$string["bgcolor_r"] = 'RGBA Background color (Red)';
+$string["color_r"] = 'RGBA foreground color (Red)';
+$string["green"] = 'Green';
+$string["bgcolor_g"] = 'RGBA Background color (Green)';
+$string["color_g"] = 'RGBA foreground color (Green)';
+$string["blue"] = 'Blue';
+$string["bgcolor_b"] = 'RGBA Background color (Blue)';
+$string["color_b"] = 'RGBA foreground color (Blue)';
+$string["alpha"] = 'Alpha';
+$string["bgcolor_a"] = 'RGBA Background color (Alpha)';
+$string["color_a"] = 'RGBA foreground color (Alpha)';
+$string['bgcolor_rgb'] = 'QR Code background color in (RGBA) (optional)';
+$string['color_rgb'] = 'QR Code foreground color in (RGBA) (optional)';
 $string['privacy:metadata'] = 'The QR Code plugin does not store any personal data.';

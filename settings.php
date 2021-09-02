@@ -24,3 +24,41 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
+
+$ADMIN->add('editoratto', new admin_category('atto_qrcode', new lang_string('qrcode_settings', 'atto_qrcode')));
+
+if ($ADMIN->fulltree) {
+    $qrcode_size_desc = get_string('qrcode_size_desc', 'atto_qrcode');
+    $default = 300;
+
+    $settings->add(new admin_setting_configtext('atto_qrcode/qrcode_size', get_string('qrcode_size', 'atto_qrcode'),
+        $qrcode_size_desc, $default, PARAM_INT, 20));
+
+    $desc_qrcode_margin = get_string('qrcode_margin_desc', 'atto_qrcode');
+    $settings->add(new admin_setting_configtext('atto_qrcode/qrcode_margin', get_string('qrcode_margin', 'atto_qrcode'),
+        $desc_qrcode_margin, 10, PARAM_INT, 20));
+
+    $settings->add(new admin_setting_heading('bgcolor_rgb', get_string('bgcolor_rgb','atto_qrcode'),''));
+
+    $settings->add(new admin_setting_configtext('atto_qrcode/bgcolor_r', get_string('red', 'atto_qrcode'),
+        get_string('bgcolor_r','atto_qrcode'), 255, PARAM_INT, 3));
+    $settings->add(new admin_setting_configtext('atto_qrcode/bgcolor_g', get_string('green', 'atto_qrcode'),
+        get_string('bgcolor_g','atto_qrcode'), 255, PARAM_INT, 3));
+    $settings->add(new admin_setting_configtext('atto_qrcode/bgcolor_b', get_string('blue', 'atto_qrcode'),
+        get_string('bgcolor_b','atto_qrcode'), 255, PARAM_INT, 3));
+    $settings->add(new admin_setting_configtext('atto_qrcode/bgcolor_a', get_string('alpha', 'atto_qrcode'),
+        get_string('bgcolor_a','atto_qrcode'), 0, PARAM_INT, 3));
+
+    $settings->add(new admin_setting_heading('color_rgb',get_string('color_rgb','atto_qrcode'),''));
+
+    $settings->add(new admin_setting_configtext('atto_qrcode/color_r', get_string('red', 'atto_qrcode'),
+        get_string('color_r','atto_qrcode'), 0, PARAM_INT, 3));
+    $settings->add(new admin_setting_configtext('atto_qrcode/color_g', get_string('green', 'atto_qrcode'),
+        get_string('color_g','atto_qrcode'), 0, PARAM_INT, 3));
+    $settings->add(new admin_setting_configtext('atto_qrcode/color_b', get_string('blue', 'atto_qrcode'),
+        get_string('color_b','atto_qrcode'), 0, PARAM_INT, 3));
+    $settings->add(new admin_setting_configtext('atto_qrcode/color_a', get_string('alpha', 'atto_qrcode'),
+        get_string('color_a','atto_qrcode'), 0, PARAM_INT, 3));
+
+
+}
