@@ -15,14 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Renders text with the active filters and returns it. Used to create previews of equations
- * using whatever tex filters are enabled.
+ * Generate the QR code.
  *
- * @package    atto_equation
- * @copyright  2014 Damyon Wiese
+ * @package    atto_qrcode
+ * @copyright  2021 Brain Station 23 Ltd. <brainstation-23.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
  */
-
 use atto_qrcode\output_image;
 
 define('AJAX_SCRIPT', true);
