@@ -50,7 +50,7 @@ $PAGE->set_context($context);
 require_login($course, false, $cm);
 require_sesskey();
 
-$output_image = new output_image(2, $size, $context, $margin);
+$output_image = new output_image($size, $context, $margin);
 
 try {
     $base64string = $output_image->create_image($content,

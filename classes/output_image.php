@@ -31,6 +31,8 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
 use Endroid\QrCode\Writer\PngWriter;
 use DOMDocument;
+use Exception;
+use stdClass;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -62,24 +64,21 @@ class output_image
     protected $format;
 
 
+    /**
+     * margin of qrcode.
+     * @var int
+     */
     protected $margin;
 
     /**
      * Size of qrcode (downloaded image).
-     * Only for png.
      * @var int
      */
     protected $size;
 
     /**
-     * Filepath for logo.
-     * @var string
-     */
-    protected $logopath;
-
-    /**
      * Course for which the qrcode is created.
-     * @var \stdClass
+     * @var stdClass
      */
     protected $context;
 
@@ -90,39 +89,24 @@ class output_image
      * @param $context
      * @param int $margin
      */
-    public function __construct($format, $size, $context, $margin = 10)
+    public function __construct($size, $context, $margin = 10)
     {
-        global $CFG;
-        $this->format = $format;
+        $this->format = 2;
         $this->size = (int)$size;
         $this->context = $context;
         $this->margin = $margin;
-        $this->logopath = null;
-        $file = $CFG->localcachedir . '/atto_qrcode/context-' .
-            (int)$context->id . '-' . $this->size; // Set file path.
-
-
-// Add file ending.
-        if ($format == 1) {
-            $file .= '.svg';
-        } else {
-            $file .= '.png';
-        }
-
-        $this->file = $file;
     }
 
     /**
      * @param string $data
      * @param array $bgcolor_rgba
-     * @param array $color_rgb
+     * @param array $color_rgba
      * @param string $encoding
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function create_image(string $data, array $bgcolor_rgba= [], array $color_rgba=[], $encoding= 'UTF-8')
     {
-        global $CFG;
         list($bgcolor_r , $bgcolor_g, $bgcolor_b, $bgcolor_a) = $bgcolor_rgba;
         list($color_r , $color_g, $color_b, $color_a) = $color_rgba;
 
@@ -135,7 +119,6 @@ class output_image
         $color_g = $color_g ?? 0;
         $color_b = $color_b ?? 0;
         $color_a = $color_a ?? 0;
-
 
         $writer = new PngWriter();
 
