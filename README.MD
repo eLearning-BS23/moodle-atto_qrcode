@@ -1,12 +1,8 @@
-# Moodle Proctoring
+# Moodle atto-qrcode
 
-Moodle Atto QR Code is a Atto sub-plugin to easily create and integrate QR Code to Moodle Atto form.
+Moodle Atto qr-code is an atto sub-plugin to easily create and integrate qr-code to Moodle atto editor.
 
 This library helps you generate QR codes in a jiffy. Makes use of bacon/bacon-qr-code to generate the matrix and khanamiryan/qrcode-detector-decoder for validating generated QR codes.
-<p align="center">
-<img src="https://imgur.com/OpW0BVz.png">
-</p>
-
 
 ## Features
 - Easy qrcode integration
@@ -20,50 +16,30 @@ This library helps you generate QR codes in a jiffy. Makes use of bacon/bacon-qr
 
 You can install this plugin from [Moodle plugins directory](https://moodle.org/plugins) or can download from [Github](https://github.com/eLearning-BS23/moodle-atto_qrcode).
 
+# Global Setting page
+```
+  Dashboard->site administration > plugins overview > QR Code -> settings
+```
+- Define your default QR-Code size, Margin, RGBA (Red, Green, Blue, Alpha) Background and ForeGround color.
+
+<img src="https://imgur.com/XzqWPvs" alt="" >
+<img src="https://imgur.com/WXzziRn" alt="" >
+<img src="https://imgur.com/2XH0pjA" alt="">
+
 ## Toolbar Settings
-- Go to site administration > plugins overview > Atto HTML editor
-- Go to `settings`
-- Scroll down and from `Toolbar config` add `qrcode` to your desired toolbar 
+```
+  Dashboard->site administration > plugins overview > Atto HTML editor-> settings
+```
 
-
+# usages
 > After installing the plugin, you can use the plugin by following:
 
-
-- Go to Atto TML editor:
+- Go to Atto HTML editor:
 - Click on QR-code icon from Toolbar
 - Insert QR-Code content
 - Insert width, margin, background and foreground color (Optional) of qrcode
 - Done!
-```
-  Dashboard->My courses->Your Course Name->Lesson->Quiz Name->Edit settings
-```
-<p align="center">
-<img src="https://i.imgur.com/rwTYQ9M.png" width="80%">
-</p>
 
-> Now you can attempt your quiz like this:
-<p align="center">
-<img src="https://imgur.com/Zef3eqn.png" width="40%">
-</p>
-
-> You can check the report from Admin Site:
-<p align="center">
-<img src="https://imgur.com/QJ7yVTL.png">
-</p>
-
-# usages
-- go to atto editor
-- you can see qr-code logo on toolbar
-- click on the logo
-- Pop-up will be shown
-- insert your account id, video id and optional player id
-- done!
-
-# Global Setting page
-
-- Go to site administration > plugins overview > QR Code
-- Go to `settings`
-- you can define your default QR-Code size, Margin, RGBA (Red, Green, Blue, Alpha) Background and ForeGround color
 
 
 ## License
