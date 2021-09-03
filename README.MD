@@ -4,6 +4,8 @@ Moodle Atto qr-code is an atto sub-plugin to easily create and integrate qr-code
 
 This library helps you generate QR codes in a jiffy. Makes use of bacon/bacon-qr-code to generate the matrix and khanamiryan/qrcode-detector-decoder for validating generated QR codes.
 
+<img src="https://i.imgur.com/MT6mGaE.png">
+
 ## Features
 - Easy qrcode integration
 - Flexible to customize
@@ -22,9 +24,9 @@ You can install this plugin from [Moodle plugins directory](https://moodle.org/p
 ```
 - Define your default QR-Code size, Margin, RGBA (Red, Green, Blue, Alpha) Background and ForeGround color.
 
-<img src="https://imgur.com/XzqWPvs" alt="" >
-<img src="https://imgur.com/WXzziRn" alt="" >
-<img src="https://imgur.com/2XH0pjA" alt="">
+<img src="https://imgur.com/XzqWPvs.png">
+<img src="https://i.imgur.com/ZRlXfzv.png">
+
 
 ## Toolbar Settings
 ```
@@ -39,6 +41,8 @@ You can install this plugin from [Moodle plugins directory](https://moodle.org/p
 - Insert QR-Code content
 - Insert width, margin, background and foreground color (Optional) of qrcode
 - Done!
+
+<img src="https://i.imgur.com/LlZeBLG.png">
 
 
 
