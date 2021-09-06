@@ -33,7 +33,8 @@ Dashboard -> Site administration -> Plugins -> Text editors -> Atto HTML editor 
  Dashboard -> Site administration -> Plugins -> Text editors -> Atto HTML editor -> Atto toolbar settings
 ```
 <img src="https://i.imgur.com/XQgWkiB.png" alt="toolbar-config-settings"/>
-# usages
+
+## usages
 > After installing the plugin, you can use the plugin by following:
 
 - Go to Atto HTML editor:
