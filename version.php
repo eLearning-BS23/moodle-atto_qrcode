@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version = 2021090100;  // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires = 2019111809; // Requires this Moodle version.
+$plugin->requires = 2019111803; // Requires this Moodle version.
 $plugin->component = 'atto_qrcode'; // Full name of the plugin (used for diagnostics).
-$plugin->release = '1.0.0';
+$plugin->release = 'v1.0.0';
 $plugin->maturity = MATURITY_STABLE;
